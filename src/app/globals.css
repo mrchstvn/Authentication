@@ -1,130 +1,320 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+/* ============================================================
+   IMPORTS - loading in the tools this file needs
+   ============================================================ */
+@import "tailwindcss"; /* the main Tailwind CSS engine */
+@import "tw-animate-css"; /* pre-made animations (fade, slide, etc.) */
+@import "shadcn/tailwind.css"; /* base styles for shadcn/ui components (buttons, cards, etc.) */
 
+/* This line lets you write dark-mode-only styles using "dark:" in your code */
 @custom-variant dark (&:is(.dark *));
 
+/* ============================================================
+   THEME MAP - this section just "renames" the raw colors/values
+   below (from :root and .dark) into names Tailwind understands,
+   like bg-primary, text-foreground, rounded-lg, etc.
+   You usually DON'T need to edit this section - edit the actual
+   colors further down in :root and .dark instead.
+   ============================================================ */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
+  --color-background: var(--background); /* page's overall background color */
+  --color-foreground: var(--foreground); /* default text color */
+
+  --font-sans: var(--font-sans); /* default body font */
+  --font-mono: var(--font-geist-mono); /* font used for code/monospace text */
+  --font-heading: var(
+    --font-sans
+  ); /* font used for headings (currently same as body font) */
+
+  /* --- Sidebar-specific colors (the left/right nav panel, if you have one) --- */
+  --color-sidebar-ring: var(
+    --sidebar-ring
+  ); /* focus outline color inside sidebar */
+  --color-sidebar-border: var(
+    --sidebar-border
+  ); /* line/border color inside sidebar */
+  --color-sidebar-accent-foreground: var(
+    --sidebar-accent-foreground
+  ); /* text color on highlighted sidebar items */
+  --color-sidebar-accent: var(
+    --sidebar-accent
+  ); /* background color of highlighted/hovered sidebar items */
+  --color-sidebar-primary-foreground: var(
+    --sidebar-primary-foreground
+  ); /* text color on the "active" sidebar item */
+  --color-sidebar-primary: var(
+    --sidebar-primary
+  ); /* background color of the "active" sidebar item */
+  --color-sidebar-foreground: var(
+    --sidebar-foreground
+  ); /* normal text color in sidebar */
+  --color-sidebar: var(--sidebar); /* sidebar's own background color */
+
+  /* --- Chart colors (used by graphs, e.g. spending charts in Budgefy) --- */
   --color-chart-5: var(--chart-5);
   --color-chart-4: var(--chart-4);
   --color-chart-3: var(--chart-3);
   --color-chart-2: var(--chart-2);
   --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  /* ^ These 5 are just a palette of colors chart libraries will cycle
+     through for different bars/lines/slices. Chart 1 is used first,
+     then chart 2, and so on. */
+
+  /* --- General UI colors --- */
+  --color-ring: var(
+    --ring
+  ); /* the glowing outline you see around a focused input/button */
+  --color-input: var(
+    --input
+  ); /* border color of form inputs (text boxes, etc.) */
+  --color-border: var(
+    --border
+  ); /* default border color used all over the app (cards, dividers) */
+  --color-destructive: var(
+    --destructive
+  ); /* color for "dangerous" actions, like Delete buttons or error text */
+
+  --color-info: var(
+    --info
+  ); /* NEW: the blue color used for "good news" numbers, like Income and Receivables */
+  --color-info-foreground: var(
+    --info-foreground
+  ); /* NEW: text color that sits on top of the blue "info" color */
+
+  --color-accent-foreground: var(
+    --accent-foreground
+  ); /* text color on top of "accent" backgrounds */
+  --color-accent: var(
+    --accent
+  ); /* background used for subtle highlights (e.g. hover states) */
+
+  --color-muted-foreground: var(
+    --muted-foreground
+  ); /* faded/lighter text color, e.g. helper text, placeholders */
+  --color-muted: var(
+    --muted
+  ); /* faded background color, e.g. disabled sections */
+
+  --color-secondary-foreground: var(
+    --secondary-foreground
+  ); /* text color on secondary buttons */
+  --color-secondary: var(
+    --secondary
+  ); /* background color of secondary (less important) buttons */
+
+  --color-primary-foreground: var(
+    --primary-foreground
+  ); /* text color on your main/primary buttons */
+  --color-primary: var(
+    --primary
+  ); /* background color of your main/primary buttons - this is usually your "brand color" */
+
+  --color-popover-foreground: var(
+    --popover-foreground
+  ); /* text color inside popovers/dropdowns/tooltips */
+  --color-popover: var(
+    --popover
+  ); /* background color of popovers/dropdowns/tooltips */
+
+  --color-card-foreground: var(--card-foreground); /* text color inside cards */
+  --color-card: var(
+    --card
+  ); /* background color of cards (like a dashboard widget box) */
+
+  /* --- Corner roundness (radius) sizes, all based off one master value --- */
+  --radius-sm: calc(
+    var(--radius) * 0.6
+  ); /* small roundness - e.g. small buttons, badges */
+  --radius-md: calc(
+    var(--radius) * 0.8
+  ); /* medium roundness - e.g. inputs, normal buttons */
+  --radius-lg: var(
+    --radius
+  ); /* large roundness - e.g. cards, modals (this is the "base" value) */
+  --radius-xl: calc(
+    var(--radius) * 1.4
+  ); /* extra large roundness - e.g. big containers */
+  --radius-2xl: calc(var(--radius) * 1.8); /* even bigger roundness */
+  --radius-3xl: calc(
+    var(--radius) * 2.2
+  ); /* very rounded - e.g. pill-shaped elements */
+  --radius-4xl: calc(var(--radius) * 2.6); /* the roundest option available */
 }
 
+/* ============================================================
+   LIGHT MODE COLORS - this is where you actually change colors
+   for your app's normal (non-dark) appearance.
+   These have been updated to match your Budgefy dashboard mockup
+   (cream background + forest-green accents). Colors are written
+   as plain hex codes (the same #RRGGBB format used in tools like
+   Photoshop, Figma, or Canva) so they're easy to read and swap.
+   ============================================================ */
 :root {
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --card: #ffffff; /* card background = white (the white boxes like "My Wallets", "Total Income") */
+  --card-foreground: #171717; /* text on cards = near-black */
+
+  --popover: #ffffff; /* dropdown/tooltip background = white */
+  --popover-foreground: #171717; /* dropdown/tooltip text = near-black */
+
+  --primary: #1b4332; /* MAIN BRAND COLOR = your forest green (logo text, active nav item, main buttons) */
+  --primary-foreground: #ffffff; /* text color that sits ON TOP of the green - white, for contrast */
+
+  --secondary: #f1f1f1; /* secondary button/background color - light gray */
+  --secondary-foreground: #1b4332; /* text on secondary background - forest green */
+
+  --muted: #d9d9d9; /* faded gray used for the loading/placeholder bars in your dashboard cards */
+  --muted-foreground: #6b6b6b; /* faded text (placeholders, helper captions) - medium gray */
+
+  --accent: #eff6e9; /* subtle highlight background (e.g. hover on a menu item) - a very light green tint */
+  --accent-foreground: #1b4332; /* text on top of accent background - forest green */
+
+  --destructive: #dc2626; /* RED - used for Total Debts, Total Expense, and delete/error actions */
+
+  --info: #2563eb; /* NEW: BLUE - used for Total Income, Total Receivables, and other "positive" numbers */
+  --info-foreground: #ffffff; /* NEW: text color that sits on top of the blue - white */
+
+  --border: #c9d6c9; /* default border/divider line color - a soft green-gray, matches the thin lines around your cards */
+  --input: #c9d6c9; /* border color for form inputs - same soft green-gray */
+  --ring: #1b4332; /* focus glow color around inputs/buttons - forest green, so it matches your brand */
+
+  /* Chart palette (light mode) - used by the donut charts and any graphs.
+     Right now the donut in your mockup is just plain gray, so chart-1
+     is set to match that. Add more color here later once you have
+     real category data to break down (e.g. Food, Rent, Transport). */
+  --chart-1: #d9d9d9; /* the gray donut ring color seen in the mockup */
+  --chart-2: #2563eb; /* blue - can be used for an income-related slice */
+  --chart-3: #1b4332; /* forest green - can be used for a savings-related slice */
+  --chart-4: #dc2626; /* red - can be used for an expense-related slice */
+  --chart-5: #6b6b6b; /* gray - fallback/extra slice color */
+
+  --radius: 0.75rem; /* MASTER ROUNDNESS VALUE - controls how rounded ALL cards/buttons/inputs are. Raise this number (e.g. 1rem) for softer, rounder corners like in the mockup, or lower it for sharper corners */
+
+  /* Sidebar colors (light mode) - the left-hand navigation panel */
+  --sidebar: #ffffff; /* sidebar background - white */
+  --sidebar-foreground: #1b4332; /* sidebar text/icons (Dashboard, Transactions, etc.) - forest green */
+  --sidebar-primary: #1b4332; /* background of the ACTIVE/selected sidebar item (the dark green "Dashboard" pill) */
+  --sidebar-primary-foreground: #ffffff; /* text on the active sidebar item - white */
+  --sidebar-accent: #eff6e9; /* background when hovering a sidebar item - light green tint */
+  --sidebar-accent-foreground: #1b4332; /* text color when hovering a sidebar item - forest green */
+  --sidebar-border: #e4e4e4; /* line separating sidebar from the rest of the page - light gray */
+  --sidebar-ring: #1b4332; /* focus glow color inside the sidebar - forest green */
+
+  --background: #faf7ec; /* THE WHOLE PAGE'S background color - your cream tone */
+  --foreground: #171717; /* THE WHOLE PAGE'S default text color - near-black */
 }
 
+/* ============================================================
+   DARK MODE COLORS - these override the colors above whenever
+   the <html> tag has the class "dark" on it (i.e. dark mode is on).
+   NOTE: your mockup only showed the LIGHT (cream) version, so this
+   section is still using the ORIGINAL gray/black theme, untouched.
+   If Budgefy will have a dark mode, come back here later and swap
+   these to dark green/cream-tinted equivalents so it feels the same.
+   Still written in "oklch" format: oklch(lightness chroma hue).
+   ============================================================ */
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --background: oklch(
+    0.145 0 0
+  ); /* page background in dark mode - near-black */
+  --foreground: oklch(0.985 0 0); /* page text in dark mode - near-white */
+
+  --card: oklch(0.205 0 0); /* card background in dark mode - dark gray */
+  --card-foreground: oklch(
+    0.985 0 0
+  ); /* text on cards in dark mode - near-white */
+
+  --popover: oklch(
+    0.205 0 0
+  ); /* dropdown/tooltip background in dark mode - dark gray */
+  --popover-foreground: oklch(
+    0.985 0 0
+  ); /* dropdown/tooltip text in dark mode - near-white */
+
+  --primary: oklch(
+    0.922 0 0
+  ); /* main brand color in dark mode - light gray (flipped from light mode) */
+  --primary-foreground: oklch(
+    0.205 0 0
+  ); /* text on top of primary color in dark mode - dark gray */
+
+  --secondary: oklch(
+    0.269 0 0
+  ); /* secondary button background in dark mode - dark gray */
+  --secondary-foreground: oklch(
+    0.985 0 0
+  ); /* text on secondary background in dark mode - near-white */
+
+  --muted: oklch(0.269 0 0); /* faded background in dark mode - dark gray */
+  --muted-foreground: oklch(
+    0.708 0 0
+  ); /* faded text in dark mode - light-medium gray */
+
+  --accent: oklch(
+    0.269 0 0
+  ); /* subtle highlight background in dark mode - dark gray */
+  --accent-foreground: oklch(
+    0.985 0 0
+  ); /* text on accent background in dark mode - near-white */
+
+  --destructive: oklch(
+    0.704 0.191 22.216
+  ); /* "danger" color in dark mode - a softer red so it's not too harsh on dark backgrounds */
+
+  --border: oklch(
+    1 0 0 / 10%
+  ); /* border color in dark mode - white at 10% transparency, so it's a subtle light line */
+  --input: oklch(
+    1 0 0 / 15%
+  ); /* input border color in dark mode - white at 15% transparency */
+  --ring: oklch(0.556 0 0); /* focus glow color in dark mode - medium gray */
+
+  /* Chart palette (dark mode) - same values as light mode charts, so graphs look consistent in both modes */
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+
+  /* Sidebar colors (dark mode) */
+  --sidebar: oklch(0.205 0 0); /* sidebar background in dark mode - dark gray */
+  --sidebar-foreground: oklch(
+    0.985 0 0
+  ); /* sidebar text in dark mode - near-white */
+  --sidebar-primary: oklch(
+    0.488 0.243 264.376
+  ); /* active sidebar item background in dark mode - currently a BLUE tone (note: this is different from light mode's black/gray) */
+  --sidebar-primary-foreground: oklch(
+    0.985 0 0
+  ); /* text on active sidebar item in dark mode - near-white */
+  --sidebar-accent: oklch(
+    0.269 0 0
+  ); /* sidebar hover background in dark mode - dark gray */
+  --sidebar-accent-foreground: oklch(
+    0.985 0 0
+  ); /* sidebar hover text in dark mode - near-white */
+  --sidebar-border: oklch(
+    1 0 0 / 10%
+  ); /* sidebar divider line in dark mode - faint white */
+  --sidebar-ring: oklch(
+    0.556 0 0
+  ); /* sidebar focus glow in dark mode - medium gray */
 }
 
+/* ============================================================
+   BASE STYLES - applies these rules to the whole app automatically
+   ============================================================ */
 @layer base {
   * {
+    /* every single element on the page gets the border color and
+       focus-ring color defined above, by default */
     @apply border-border outline-ring/50;
   }
   body {
+    /* the <body> (whole visible page) uses the background/foreground
+       colors defined above */
     @apply bg-background text-foreground;
   }
   html {
+    /* the whole page uses the "sans" font defined above */
     @apply font-sans;
   }
 }
