@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "@/lib/auth-client";
 import { registerSchema, type registerInput } from "@/lib/validations";
-import { signUp } from "@/lib/auth-client";
 
 import { Button } from "@/components/ui/button";
 import { SiGithub, SiGoogle } from "@icons-pack/react-simple-icons";
@@ -76,21 +75,21 @@ export default function RegisterPage() {
           <div className="w-full ">
             <div>
               <FieldLabel
-                htmlFor="username"
+                htmlFor="name"
                 className="block text-sm font-medium text-gray-700 m-1"
               >
-                Username
+                Name
               </FieldLabel>
               <Input
-                id="username"
+                id="name"
                 type="text"
                 placeholder="Spiderman"
                 className="w-full mb-1"
-                {...register("username")}
+                {...register("name")}
               />
-              {errors.username && (
+              {errors.name && (
                 <p className="text-red-500 text-xs mt-1 text-right">
-                  {errors.username.message}
+                  {errors.name.message}
                 </p>
               )}
             </div>
