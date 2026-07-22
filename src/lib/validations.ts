@@ -16,10 +16,10 @@ const passwordRule = z
 
 export const registerSchema = z
   .object({
-    username: z
+    name: z
       .string()
       .trim()
-      .min(2, { message: "Username must be at least 2 characters long" })
+      .min(2, { message: "Name must be at least 2 characters long" })
       .toLowerCase(),
     email: z
       .string()
