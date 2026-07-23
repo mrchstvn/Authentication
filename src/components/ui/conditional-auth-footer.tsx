@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-export default function ConditionalAuthHeader() {
+export default function ConditionalAuthFooter() {
   const pathname = usePathname();
   return (
     <div>
