@@ -96,7 +96,7 @@ export default function LoginPage() {
             className="w-full mt-4"
             size="lg"
           >
-            {isSubmitting ? "Creating account..." : "Create account"}
+            {isSubmitting ? "Logging in..." : "Login"}
           </Button>
           <ConditionalAuthFooter />
         </div>
