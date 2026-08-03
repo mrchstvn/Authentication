@@ -27,7 +27,7 @@ export default function LoginPage() {
   async function onSubmit(data: loginInput) {
     setServerError("");
 
-    const { error: SignInError } = await authClient.SignIn.email(data);
+    const { error: SignInError } = await authClient.signIn.email(data);
 
     if (SignInError) {
       setServerError(
