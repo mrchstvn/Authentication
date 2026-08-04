@@ -21,6 +21,17 @@ export const auth = betterAuth({
     requiredEmailVerification: false, // Set to true if you want to require email verification
   },
 
+  socialProviders: {
+    google: {
+      clientId: process.env.AUTH_GOOGLE_ID!,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET!,
+    },
+    github: {
+      clientId: process.env.AUTH_GITHUB_ID!,
+      clientSecret: process.env.AUTH_GITHUB_SECRET!,
+    },
+  },
+
   secondaryStorage: {
     get: async (key) => await redis.get(key),
     set: async (key, value, ttl) => {
@@ -32,14 +43,14 @@ export const auth = betterAuth({
     },
   },
 
-  rateLimiter: {
+  rateLimit: {
     enabled: true,
     storage: "secondary-storage",
-    window: 60 * 1000, // 1 minute,
-    max: 5, // Maximum of 5 requests per window
-    custorRules: {
-      "/signin/email": { window: 60 * 1000, max: 5 }, // 5 requests per minute for email sign-in
-      "/signup/email": { window: 60 * 1000, max: 5 }, // 5 requests per minute for email sign-up
+    window: 60, // 1 minute,
+    max: 100, // Maximum of 100 requests per window
+    customRules: {
+      "/sign-in/email": { window: 60, max: 5 }, // 5 requests per minute for email sign-in
+      "/sign-up/email": { window: 60, max: 5 }, // 5 requests per minute for email sign-up
     },
   },
 });
