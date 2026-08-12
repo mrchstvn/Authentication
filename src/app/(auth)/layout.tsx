@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui/button";
-import { SiGithub, SiGoogle } from "@icons-pack/react-simple-icons";
+import SocialLoginButtons from "@/components/ui/socialloginbuttons";
 import ConditionalAuthHeader from "@/components/ui/conditional-auth-header";
 
 export default function AuthLayout({
@@ -21,16 +20,7 @@ export default function AuthLayout({
           </p>
 
           {/* Oauth container */}
-          <div className="flex flex-col gap-2">
-            <Button className="w-full" size="lg" variant="outline">
-              <SiGoogle className="mr-2 h-4 w-4" />
-              Continue with Google
-            </Button>
-            <Button className="w-full" size="lg" variant="outline">
-              <SiGithub className="mr-2 h-4 w-4" />
-              Continue with GitHub
-            </Button>
-          </div>
+          <SocialLoginButtons />
 
           {/* Divider line with "or" text */}
           <div className="flex flex-row items-center gap-4">
